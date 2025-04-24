@@ -1,0 +1,221 @@
+openapi: 3.0.0
+info:
+  title: LMS API
+  version: 1.0.0
+  description: API для системы управления обучением (LMS)
+paths:
+  /courses/{course_id}/topics:
+    post:
+      summary: Создать тему
+      description: Создает новую тему в курсе.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+              required:
+                - title
+                - content
+      responses:
+        '201':
+          description: Тема успешно создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+        '400':
+          description: Неверные данные
+        '404':
+          description: Курс не найден
+  /courses/{course_id}/topics/{topic_id}:
+    put:
+      summary: Обновить тему
+      description: Обновляет тему в курсе.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: topic_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+              required:
+                - title
+                - content
+      responses:
+        '200':
+          description: Тема успешно обновлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+        '400':
+          description: Неверные данные
+        '404':
+          description: Курс или тема не найдены
+    delete:
+      summary: Удалить тему
+      description: Удаляет тему из курса.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: topic_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Тема успешно удалена
+        '404':
+          description: Курс или тема не найдены
+components:
+  schemas:
+    Topic:
+      type: object
+      properties:
+        topic_id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+  /courses/{course_id}/problems/{problem_id}/solve:
+    put:
+      summary: Решить задачу
+      description: Студент решает задачу.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: problem_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                solution:
+                  type: string
+                student_id:
+                  type: integer
+              required:
+                - solution
+                - student_id
+      responses:
+        '200':
+          description: Задача решена успешно
+        '400':
+          description: Неверные данные
+        '404':
+          description: Курс или задача не найдены
+
+  /courses/{course_id}/problems/{problem_id}/grade:
+    post:
+      summary: Оценить задачу
+      description: Преподаватель оценивает задачу.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: problem_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                grade:
+                  type: string
+                student_id:
+                  type: integer
+              required:
+                - grade
+                - student_id
+      responses:
+        '200':
+          description: Оценка задачи обновлена успешно
+        '400':
+          description: Неверные данные
+        '404':
+          description: Курс или задача не найдены
+
+    put:
+      summary: Обновить оценку задачи
+      description: Преподаватель обновляет оценку задачи.
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: problem_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                grade:
+                  type: string
+                student_id:
+                  type: integer
+              required:
+                - grade
+                - student_id
+      responses:
+        '200':
+          description: Оценка задачи обновлена успешно
+        '400':
+          description: Неверные данные
+        '404':
+          description: Курс или задача не найдены
+
